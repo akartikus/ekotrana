@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ekotrana/command_bloc.dart';
 import 'package:ekotrana/comnand_event.dart';
+import 'package:ekotrana/exercice.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,16 +27,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   IconData _playIcon = Icons.play_arrow;
   final _bloc = CommandBloc();
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +37,25 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: StreamBuilder(
-          stream: _bloc.outCounter,
-          initialData: 30,
-          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+          stream: _bloc.outExercice,
+          initialData: Exercice(3, 30),
+          builder: (BuildContext context, AsyncSnapshot<Exercice> snapshot) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    '${snapshot.data}',
-                    style: Theme.of(context).textTheme.display1,
-                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        '${snapshot.data.counter}',
+                        style: Theme.of(context).textTheme.display1,
+                      ),
+                      Text(
+                        '${snapshot.data.repetition}',
+                        style: Theme.of(context).textTheme.display1,
+                      ),
+                    ],
+                  )
                 ]);
           },
         ),
