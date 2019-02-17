@@ -1,15 +1,19 @@
 import 'dart:async';
 import 'package:ekotrana/comnand_event.dart';
+import 'package:ekotrana/exercice.dart';
 
 class CommandBloc {
-  int _timer = 30;
-  int _repetition;
+  Exercice _exercice = Exercice(3, 30);
   bool _isPlaying;
   Timer timer;
 
-  StreamController<int> _timerController = StreamController<int>();
-  StreamSink<int> get _decTimer => _timerController.sink;
-  Stream<int> get outCounter => _timerController.stream;
+  StreamController<Exercice> _exerciceController = StreamController<Exercice>();
+  StreamSink<Exercice> get _decExercice => _exerciceController.sink;
+  Stream<Exercice> get outExercice => _exerciceController.stream;
+
+  StreamController<String> _messageController = StreamController<String>();
+  StreamSink<String> get _setMessage => _messageController.sink;
+  Stream<String> get outMessage => _messageController.stream;
 
   final _actionEventController = StreamController<CommandEvent>();
   Sink<CommandEvent> get counterEventSink => _actionEventController.sink;
@@ -24,8 +28,12 @@ class CommandBloc {
 
   void countDown() {
     if (_isPlaying) {
-      _timer--;
-      _decTimer.add(_timer);
+      _decExercice.add(_exercice);
+      if (!_exercice.isFinish()) {
+        _exercice.decrement();
+      }
+    } else {
+      _setMessage.add("Time Out");
     }
   }
 
@@ -35,14 +43,15 @@ class CommandBloc {
     }
 
     if (event is CommandStop) {
-      _timer = 30;
-      _decTimer.add(_timer);
+      _exercice = Exercice(3, 30);
+      _decExercice.add(_exercice);
       _isPlaying = false;
     }
   }
 
   void dispose() {
-    _timerController.close();
+    _messageController.close();
+    _exerciceController.close();
     _actionEventController.close();
   }
 }
