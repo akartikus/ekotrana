@@ -9,8 +9,9 @@ class Exercice {
       if (_counter == 0) {
         _repetition--;
         _counter = _timer;
+      } else {
+        _counter--;
       }
-      _counter--;
     }
   }
 
