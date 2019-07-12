@@ -1,6 +1,6 @@
-class Exercice {
+class Exercise {
   int _timer, _repetition, _counter;
-  Exercice(this._repetition, this._timer) {
+  Exercise(this._repetition, this._timer) {
     this._counter = this._timer;
   }
 

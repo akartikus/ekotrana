@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ekotrana/command_bloc.dart';
 import 'package:ekotrana/comnand_event.dart';
-import 'package:ekotrana/exercice.dart';
+import 'package:ekotrana/exercise.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,11 +9,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'eKotrana',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Home'),
     );
   }
 }
@@ -28,7 +28,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   IconData _playIcon = Icons.play_arrow;
-  final _bloc = CommandBloc();
+  final _commandBloc = CommandBloc();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: StreamBuilder(
-          stream: _bloc.outExercice,
-          initialData: Exercice(3, 30),
-          builder: (BuildContext context, AsyncSnapshot<Exercice> snapshot) {
+          stream: _commandBloc.outExercise,
+          initialData: Exercise(3, 30),
+          builder: (BuildContext context, AsyncSnapshot<Exercise> snapshot) {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void handlePlay() {
-    _bloc.counterEventSink.add(CommandPlay());
+    _commandBloc.counterEventSink.add(CommandPlay());
     setState(() {
       _playIcon =
           (_playIcon == Icons.play_arrow) ? Icons.pause : Icons.play_arrow;
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void handleStop() {
-    _bloc.counterEventSink.add(CommandStop());
+    _commandBloc.counterEventSink.add(CommandStop());
     setState(() {
       _playIcon = Icons.play_arrow;
     });
